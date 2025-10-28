@@ -16,7 +16,7 @@ namespace u23688794_HW03
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "BikeStore", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
