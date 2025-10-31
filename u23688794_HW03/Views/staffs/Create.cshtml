@@ -1,0 +1,180 @@
+﻿@model u23688794_HW03.Models.staffs
+
+@{
+    ViewBag.Title = "Create New Staff Member";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header">
+                <h2 class="page-title">
+                    <i class="fas fa-user-plus mr-2"></i>Create New Staff Member
+                </h2>
+                <p class="page-subtitle">Add a new staff member to the system</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card section-card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-user-circle mr-2"></i>Staff Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.first_name, "First Name", htmlAttributes: new { @class = "control-label form-label" })
+                                    @Html.EditorFor(model => model.first_name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter first name" } })
+                                    @Html.ValidationMessageFor(model => model.first_name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.last_name, "Last Name", htmlAttributes: new { @class = "control-label form-label" })
+                                    @Html.EditorFor(model => model.last_name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter last name" } })
+                                    @Html.ValidationMessageFor(model => model.last_name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.email, "Email Address", htmlAttributes: new { @class = "control-label form-label" })
+                                    @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", type = "email", placeholder = "Enter email address" } })
+                                    @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.phone, "Phone Number", htmlAttributes: new { @class = "control-label form-label" })
+                                    @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter phone number" } })
+                                    @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.store_id, "Store Location", htmlAttributes: new { @class = "control-label form-label" })
+                                    @Html.DropDownList("store_id", null, "-- Select Store --", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.store_id, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.manager_id, "Reporting Manager", htmlAttributes: new { @class = "control-label form-label" })
+                                    @Html.DropDownList("manager_id", null, "-- Select Manager --", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.manager_id, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.active, "Employment Status", htmlAttributes: new { @class = "control-label form-label" })
+                                    <div class="mt-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="active" id="active_1" value="1" checked>
+                                            <label class="form-check-label" for="active_1">
+                                                Active
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="active" id="active_0" value="0">
+                                            <label class="form-check-label" for="active_0">
+                                                Inactive
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.active, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary action-button">
+                                <i class="fas fa-save mr-2"></i>Create Staff Member
+                            </button>
+                            <a href="@Url.Action("Index", "BikeStore")" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .page-subtitle {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .section-card {
+            margin-bottom: 2rem;
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-button {
+            transition: all 0.2s ease-in-out;
+        }
+
+            .action-button:hover {
+                transform: translateY(-1px);
+            }
+    </style>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            // Set the default active value to 1 if not already set
+            if ($('input[name="active"]:checked').length === 0) {
+                $('#active_1').prop('checked', true);
+            }
+
+            // Add form submission handling
+            $('form').submit(function () {
+                $('button[type="submit"]').prop('disabled', true).html('Creating...');
+            });
+        });
+    </script>
+}

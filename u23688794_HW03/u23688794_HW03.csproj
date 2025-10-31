@@ -131,6 +131,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\customersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\productsController.cs" />
+    <Compile Include="Controllers\staffsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -199,6 +201,24 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Electra_Cruiser 1.jpeg" />
+    <Content Include="Images\Electra_Cruiser.jpeg" />
+    <Content Include="Images\Haro_Bikes1.jpeg" />
+    <Content Include="Images\Haro_mountain_bike.jpeg" />
+    <Content Include="Images\Heler_bike2.jpeg" />
+    <Content Include="Images\Heller_bike1.jpeg" />
+    <Content Include="Images\Pure_Cycles1.jpeg" />
+    <Content Include="Images\Pure_Cycles2.jpeg" />
+    <Content Include="Images\Ritchey_bike2.jpeg" />
+    <Content Include="Images\Riychey_bike1.jpeg" />
+    <Content Include="Images\Strider_balance_bike1.jpeg" />
+    <Content Include="Images\Strider_sport_bike.jpeg" />
+    <Content Include="Images\Sun_Bicycles1.jpeg" />
+    <Content Include="Images\Sun_bicycles_retro.jpeg" />
+    <Content Include="Images\Surly_bike.jpeg" />
+    <Content Include="Images\Surly_preamble_bike.jpeg" />
+    <Content Include="Images\Trek_Marlin_bike.jpeg" />
+    <Content Include="Images\Trek_Xcaliber_bike.jpeg" />
     <Content Include="Models\BikeStore.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BikeStore.edmx</DependentUpon>
@@ -248,6 +268,22 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\BikeStore\Index.cshtml" />
+    <Content Include="Views\staffs\Create.cshtml" />
+    <Content Include="Views\staffs\Delete.cshtml" />
+    <Content Include="Views\staffs\Details.cshtml" />
+    <Content Include="Views\staffs\Edit.cshtml" />
+    <Content Include="Views\staffs\Index.cshtml" />
+    <Content Include="Views\customers\Create.cshtml" />
+    <Content Include="Views\customers\Delete.cshtml" />
+    <Content Include="Views\customers\Details.cshtml" />
+    <Content Include="Views\customers\Edit.cshtml" />
+    <Content Include="Views\customers\Index.cshtml" />
+    <Content Include="Views\products\Create.cshtml" />
+    <Content Include="Views\products\Delete.cshtml" />
+    <Content Include="Views\products\Details.cshtml" />
+    <Content Include="Views\products\Edit.cshtml" />
+    <Content Include="Views\products\Index.cshtml" />
+    <Content Include="Views\BikeStore\Maintain.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

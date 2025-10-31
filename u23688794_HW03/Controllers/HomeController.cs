@@ -20,38 +20,8 @@ namespace u23688794_HW03.Controllers
             _context.Configuration.LazyLoadingEnabled = false;
         }
 
-        public async Task<ActionResult> Index()
-        {
-            try
-            {
-                var viewModel = new HomeViewModel
-                {
-                    StaffList = await GetStaffListAsync(),
-                    CustomerList = await GetCustomerListAsync(),
-                    ProductList = await GetProductListAsync(),
-                    Brands = await GetBrandsAsync(),
-                    Categories = await GetCategoriesAsync()
-                };
 
-                return View(viewModel);
-            }
-            catch (Exception ex)
-            {
-                // Return empty view model if there's an error
-                var viewModel = new HomeViewModel
-                {
-                    StaffList = new List<staffs>(),
-                    CustomerList = new List<customers>(),
-                    ProductList = new List<ProductSummary>(),
-                    Brands = new List<string>(),
-                    Categories = new List<string>()
-                };
-                return View(viewModel);
-            }
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Index(string brandFilter, string categoryFilter)
+        public async Task<ActionResult> Index(string brandFilter = null, string categoryFilter = null, int staffPage = 1, int customerPage = 1, int productPage = 1)
         {
             try
             {
@@ -83,6 +53,7 @@ namespace u23688794_HW03.Controllers
                 return View(viewModel);
             }
         }
+
 
         private async Task<List<staffs>> GetStaffListAsync()
         {

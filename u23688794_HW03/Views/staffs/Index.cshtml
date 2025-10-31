@@ -1,0 +1,67 @@
+﻿@model IEnumerable<u23688794_HW03.Models.staffs>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Staff</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            <p>First name</p>
+        </th>
+        <th>
+            <p>Last name</p>
+        </th>
+        <th>
+            <p>Email</p>
+        </th>
+        <th>
+            <p>Phone</p>
+        </th>
+        <th>
+            <p>Active</p>
+        </th>
+        <th>
+            <p>Manager name</p>
+        </th>
+        <th>
+            <p>Store name</p>
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.first_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.last_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.active)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.staffs2.first_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.stores.store_name)
+        </td>
+        <td>
+           
+            @Html.ActionLink("Details", "Details", new { id=item.staff_id }) 
+           
+        </td>
+    </tr>
+}
+
+</table>

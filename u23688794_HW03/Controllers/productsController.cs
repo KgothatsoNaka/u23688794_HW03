@@ -12,107 +12,116 @@ using u23688794_HW03.Models;
 
 namespace u23688794_HW03.Controllers
 {
-    public class customersController : Controller
+    public class productsController : Controller
     {
         private BikeStoresEntities db = new BikeStoresEntities();
 
-        // GET: customers
+        // GET: products
         public async Task<ActionResult> Index()
         {
-            return View(await db.customers.ToListAsync());
+            var products = db.products.Include(p => p.brands).Include(p => p.categories);
+            return View(await products.ToListAsync());
         }
 
-        // GET: customers/Details/5
+        // GET: products/Details/5
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            customers customers = await db.customers.FindAsync(id);
-            if (customers == null)
+            products products = await db.products.FindAsync(id);
+            if (products == null)
             {
                 return HttpNotFound();
             }
-            return View(customers);
+            return View(products);
         }
 
-        // GET: customers/Create
+        // GET: products/Create
         public ActionResult Create()
         {
+            ViewBag.brand_id = new SelectList(db.brands, "brand_id", "brand_name");
+            ViewBag.category_id = new SelectList(db.categories, "category_id", "category_name");
             return View();
         }
 
-        // POST: customers/Create
+        // POST: products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "customer_id,first_name,last_name,phone,email,street,city,state,zip_code")] customers customers)
+        public async Task<ActionResult> Create([Bind(Include = "product_id,product_name,brand_id,category_id,model_year,list_price")] products products)
         {
             if (ModelState.IsValid)
             {
-                db.customers.Add(customers);
+                db.products.Add(products);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(customers);
+            ViewBag.brand_id = new SelectList(db.brands, "brand_id", "brand_name", products.brand_id);
+            ViewBag.category_id = new SelectList(db.categories, "category_id", "category_name", products.category_id);
+            return View(products);
         }
 
-        // GET: customers/Edit/5
+        // GET: products/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            customers customers = await db.customers.FindAsync(id);
-            if (customers == null)
+            products products = await db.products.FindAsync(id);
+            if (products == null)
             {
                 return HttpNotFound();
             }
-            return View(customers);
+            ViewBag.brand_id = new SelectList(db.brands, "brand_id", "brand_name", products.brand_id);
+            ViewBag.category_id = new SelectList(db.categories, "category_id", "category_name", products.category_id);
+            return View(products);
         }
 
-        // POST: customers/Edit/5
+        // POST: products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "customer_id,first_name,last_name,phone,email,street,city,state,zip_code")] customers customers)
+        public async Task<ActionResult> Edit([Bind(Include = "product_id,product_name,brand_id,category_id,model_year,list_price")] products products)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(customers).State = EntityState.Modified;
+                db.Entry(products).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(customers);
+            ViewBag.brand_id = new SelectList(db.brands, "brand_id", "brand_name", products.brand_id);
+            ViewBag.category_id = new SelectList(db.categories, "category_id", "category_name", products.category_id);
+            return View(products);
         }
 
-        // GET: customers/Delete/5
+        // GET: products/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            customers customers = await db.customers.FindAsync(id);
-            if (customers == null)
+            products products = await db.products.FindAsync(id);
+            if (products == null)
             {
                 return HttpNotFound();
             }
-            return View(customers);
+            return View(products);
         }
 
-        // POST: customers/Delete/5
+        // POST: products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            customers customers = await db.customers.FindAsync(id);
-            db.customers.Remove(customers);
+            products products = await db.products.FindAsync(id);
+            db.products.Remove(products);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
