@@ -5,17 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Home Page";
 
-    // Get current page numbers from query string or default to 1
+    // This is for the page navigation
     var staffPage = Request.QueryString["staffPage"] != null ? int.Parse(Request.QueryString["staffPage"]) : 1;
     var customerPage = Request.QueryString["customerPage"] != null ? int.Parse(Request.QueryString["customerPage"]) : 1;
     var productPage = Request.QueryString["productPage"] != null ? int.Parse(Request.QueryString["productPage"]) : 1;
 
-    // Set page sizes
+
     var staffPageSize = 5;
     var customerPageSize = 5;
-    var productPageSize = 10;
+    var productPageSize = 12;
 
-    // Calculate paged data
+
     var staffStartIndex = (staffPage - 1) * staffPageSize;
     var staffEndIndex = Math.Min(staffStartIndex + staffPageSize, Model.StaffList.Count);
 
@@ -25,10 +25,38 @@
     var productStartIndex = (productPage - 1) * productPageSize;
     var productEndIndex = Math.Min(productStartIndex + productPageSize, Model.ProductList.Count);
 
-    // Calculate total pages
+
     var totalStaffPages = (int)Math.Ceiling((double)Model.StaffList.Count / staffPageSize);
     var totalCustomerPages = (int)Math.Ceiling((double)Model.CustomerList.Count / customerPageSize);
     var totalProductPages = (int)Math.Ceiling((double)Model.ProductList.Count / productPageSize);
+}
+
+@functions {
+    public string GetProductImageUrl(string brandName)
+    {
+        var imageMappings = new Dictionary<string, string[]> {
+            { "Trek", new [] { "/Images/Trek_Marlin_bike.jpeg", "/Images/Trek_Xcaliber_bike.jpeg" } },
+            { "Haro", new [] { "/Images/Haro_Bike1.jpeg", "/Images/Haro_mountain_bike.jpeg" } },
+            { "Heller", new [] { "/Images/Heler_bike2.jpeg", "/Images/Heller_bike1.jpeg" } },
+            { "Sun Bicycles", new [] { "/Images/Sun_bicycle_retro.jpeg", "/Images/Sun_Bicycle1.jpeg" } },
+            { "Surly", new [] { "/Images/Surly_bike.jpeg", "/Images/Surly_preamble_bike.jpeg" } },
+            { "Electra", new [] { "/Images/Electra_Cruiser.jpeg", "/Images/Electra_Cruiser 1.jpeg" } },
+            { "Strider", new [] { "/Images/Strider_balance_bike1.jpeg", "/Images/Strider_sport_bike.jpeg" } },
+            { "Ritchey", new [] { "/Images/Ritchey_bike2.jpeg", "/Images/Riychey_bike1.jpeg" } },
+            { "Pure Cycles", new [] { "/Images/Pure_Cycles1.jpeg", "/Images/Pure_Cycles2.jpeg" } }
+};
+
+        if (imageMappings.ContainsKey(brandName))
+        {
+            // Always use the first image, or you can randomize:
+            var random = new Random().Next(0, 2);
+            return imageMappings[brandName][random];
+        }
+
+        return "/Images/default.jpg"; 
+
+    }
+
 }
 
 @section Styles {
@@ -41,6 +69,7 @@
         .page-title {
             font-weight: 700;
             margin-bottom: 0.5rem;
+            color: #2c3e50;
         }
 
         .page-subtitle {
@@ -49,43 +78,107 @@
         }
 
         /* Card Styles */
-        .section-card {
+        .card {
             margin-bottom: 2rem;
             border: none;
             box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         }
 
-        .card-header-primary {
+        .card-header {
             background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .card-header-success {
-            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
-        }
-
-        .card-header-info {
-            background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%);
-        }
-
-        /* Table Styles */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .data-table thead th {
-            border-bottom: 2px solid #dee2e6;
+        .card-title {
+            margin: 0;
+            font-size: 1.25rem;
             font-weight: 600;
         }
 
-        .table-responsive-container {
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            transition: all 0.2s ease-in-out;
+            padding: 0.375rem 0.75rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+            }
+
+        .card-header .btn {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #007bff;
+        }
+
+            .card-header .btn:hover {
+                background-color: white;
+                color: #0056b3;
+            }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-outline-secondary {
+            background-color: transparent;
+            color: #6c757d;
+            border: 1px solid #6c757d;
+        }
+
+        /* Table Styles */
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            background-color: transparent;
+        }
+
+            .table thead th {
+                background-color: #343a40;
+                color: white;
+                border-bottom: 2px solid #dee2e6;
+                font-weight: 600;
+                padding: 0.75rem;
+            }
+
+            .table tbody tr {
+                transition: background-color 0.2s ease;
+            }
+
+                .table tbody tr:hover {
+                    background-color: rgba(0, 0, 0, 0.025);
+                }
+
+            .table td {
+                padding: 0.75rem;
+                vertical-align: middle;
+                border-top: 1px solid #dee2e6;
+            }
+
+        .table-responsive {
             overflow-x: auto;
         }
 
         /* Badge Styles */
-        .count-badge {
-            font-size: 0.875rem;
+        .badge {
             padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 0.375rem;
         }
 
         .status-badge-active {
@@ -98,39 +191,48 @@
             color: white;
         }
 
-        /* Button Styles */
-        .action-button {
-            transition: all 0.2s ease-in-out;
-        }
-
-        .action-button:hover {
-            transform: translateY(-1px);
-        }
-
-        .filter-button-group {
-            width: 100%;
-        }
-
         /* Pagination Styles */
-        .pagination-container {
+        .pageSelect {
+            display: flex;
+            padding-left: 0;
+            list-style: none;
+            border-radius: 0.375rem;
+            margin: 0;
+        }
+
+        .pageSelect-item {
+            margin: 0 0.2rem;
+        }
+
+            .pageSelect-item.active .pageSelect-link {
+                background-color: #007bff;
+                border-color: #007bff;
+                color: white;
+            }
+
+        .pageSelect-link {
+            position: relative;
+            display: block;
+            padding: 0.5rem 0.75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #007bff;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+            .pageSelect-link:hover {
+                color: #0056b3;
+                background-color: #e9ecef;
+                border-color: #dee2e6;
+            }
+
+        .pageSelect-container {
             margin-top: 1.5rem;
-        }
-
-        .pagination-item.active .pagination-link {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-        /* Alert Styles */
-        .empty-state {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
+            display: flex;
+            justify-content: center;
         }
 
         /* Filter Section */
@@ -149,22 +251,136 @@
             font-weight: 600;
             margin-bottom: 0.5rem;
             display: block;
+            color: #495057;
         }
 
-        /* Modal Styles */
-        .modal-header-gradient {
-            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        .filter-button-group {
+            width: 100%;
         }
 
-        .modal-placeholder {
+            .filter-button-group .btn {
+                flex: 1;
+            }
+
+        /* Form Controls */
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+            .form-control:focus {
+                color: #495057;
+                background-color: #fff;
+                border-color: #80bdff;
+                outline: 0;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+
+        /* Alert Styles */
+        .alert {
+            position: relative;
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: 0.375rem;
+        }
+
+        .alert-info {
+            color: #0c5460;
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+        }
+
+        .alert-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeaa7;
+        }
+
+        .empty-state {
             text-align: center;
             padding: 2rem;
         }
 
-        .modal-placeholder-icon {
+        .empty-state-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
-            opacity: 0.3;
+            opacity: 0.5;
+        }
+
+        /* Text and Color Utilities */
+        .text-success {
+            color: #28a745 !important;
+        }
+
+        .text-danger {
+            color: #dc3545 !important;
+        }
+
+        .font-weight-bold {
+            font-weight: 700 !important;
+        }
+
+       
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            height: 100%;
+        }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            }
+
+        .card-img-container {
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+        }
+
+        .product-image {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-title {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-details {
+            color: #6c757d;
+            font-size: 0.9rem;
+            flex-grow: 1;
+        }
+
+        .product-price {
+            color: #28a745;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
         }
 
         /* Responsive Adjustments */
@@ -180,6 +396,35 @@
             .filter-form-group {
                 margin-bottom: 1rem;
             }
+
+            .card-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+                .card-header .btn {
+                    align-self: stretch;
+                    text-align: center;
+                }
+
+            .pageSelect {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .pageSelect-item {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* Additional spacing */
+        .row {
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            padding: 0 15px;
         }
     </style>
 }
@@ -194,11 +439,11 @@
 
 
 
-<div class="container-fluid">
+<div class="container">
     <!-- Header Section -->
     <div class="row">
         <div class="col-12">
-            <div class="page-header text-center">
+            <div class="page-header">
                 <h1 class="page-title">BlkeStores - Bicycle Sales Management</h1>
                 <p class="page-subtitle">Comprehensive bicycle sales management solution</p>
             </div>
@@ -208,21 +453,16 @@
     <!-- Staff Section -->
     <div class="row">
         <div class="col-12">
-            <div class="card section-card">
-                <div class="card-header card-header-primary text-white d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0">
-                        <i class="fas fa-users mr-2"></i>Staff Members
-                        <span class="badge count-badge badge-light text-primary ml-2">@Model.StaffList.Count</span>
-                    </h3>
-                    <a href="@Url.Action("Create", "staffs")" class="btn btn-light btn-sm">
-                        <i class="fas fa-plus"></i> Create New Staff
-                    </a>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Staff Members</h3>
+                    <a href="@Url.Action("Create", "staffs")" class="btn">Create New Staff</a>
                 </div>
                 <div class="card-body">
                     @if (Model.StaffList.Count > 0)
                     {
-                        <div class="table-responsive-container">
-                            <table class="table data-table table-striped table-hover">
+                        <div class="table-responsive">
+                            <table class="table">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Name</th>
@@ -267,18 +507,18 @@
 
                         if (totalStaffPages > 1)
                         {
-                            <nav aria-label="Staff pagination" class="pagination-container">
-                                <ul class="pagination justify-content-center">
+                            <nav aria-label="Staff pagination" class="pageSelect-container">
+                                <ul class="pageSelect">
                                     @for (int i = 1; i <= totalStaffPages; i++)
                                     {
-                                        <li class="page-item pagination-item @(i == staffPage ? "active" : "")">
+                                        <li class="pageSelect-item @(i == staffPage ? "active" : "")">
                                             @if (i == staffPage)
                                             {
-                                                <span class="page-link pagination-link">@i</span>
+                                                <span class="pageSelect-link">@i</span>
                                             }
                                             else
                                             {
-                                                <a class="page-link pagination-link"
+                                                <a class="pageSelect-link"
                                                    href="?staffPage=@i&customerPage=@customerPage&productPage=@productPage&brandFilter=@Model.SelectedBrand&categoryFilter=@Model.SelectedCategory">
                                                     @i
                                                 </a>
@@ -294,31 +534,19 @@
         </div>
     </div>
 
-
-
-
-
-
-
-
     <!-- Customers Section -->
     <div class="row">
         <div class="col-12">
-            <div class="card section-card">
-                <div class="card-header card-header-success text-white d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0">
-                        <i class="fas fa-user-friends mr-2"></i>Customers
-                        <span class="badge count-badge badge-light text-success ml-2">@Model.CustomerList.Count</span>
-                    </h3>
-                    <a href="@Url.Action("Create", "customers")" class="btn btn-light btn-sm">
-                        <i class="fas fa-plus"></i> Create New Customer
-                    </a>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Customers</h3>
+                    <a href="@Url.Action("Create", "customers")" class="btn">Create New Customer</a>
                 </div>
                 <div class="card-body">
                     @if (Model.CustomerList.Count > 0)
                     {
-                        <div class="table-responsive-container">
-                            <table class="table data-table table-striped table-hover">
+                        <div class="table-responsive">
+                            <table class="table">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Name</th>
@@ -348,18 +576,18 @@
 
                         if (totalCustomerPages > 1)
                         {
-                            <nav aria-label="Customer pagination" class="pagination-container">
-                                <ul class="pagination justify-content-center">
+                            <nav aria-label="Customer pagination" class="pageSelect-container">
+                                <ul class="pageSelect">
                                     @for (int i = 1; i <= totalCustomerPages; i++)
                                     {
-                                        <li class="page-item pagination-item @(i == customerPage ? "active" : "")">
+                                        <li class="pageSelect-item @(i == customerPage ? "active" : "")">
                                             @if (i == customerPage)
                                             {
-                                                <span class="page-link pagination-link">@i</span>
+                                                <span class="pageSelect-link">@i</span>
                                             }
                                             else
                                             {
-                                                <a class="page-link pagination-link"
+                                                <a class="pageSelect-link"
                                                    href="?staffPage=@staffPage&customerPage=@i&productPage=@productPage&brandFilter=@Model.SelectedBrand&categoryFilter=@Model.SelectedCategory">
                                                     @i
                                                 </a>
@@ -375,23 +603,12 @@
         </div>
     </div>
 
-
-
-
-
-
-
-
-
-    <!-- Products Section -->
+    <!-- Products Table -->
     <div class="row">
         <div class="col-12">
-            <div class="card section-card">
-                <div class="card-header card-header-info text-white d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0">
-                        <i class="fas fa-bicycle mr-2"></i>Products (Bicycles)
-                        <span class="badge count-badge badge-light text-info ml-2">@Model.ProductList.Count</span>
-                    </h3>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Products (Bicycles)</h3>
                 </div>
                 <div class="card-body">
                     <!-- Filter Section -->
@@ -410,7 +627,10 @@
                                             <option value="">All Brands</option>
                                             @foreach (var brand in Model.Brands)
                                             {
-                                                <option value="@brand" selected="@(brand == Model.SelectedBrand)">@brand</option>
+                                                <option value="@brand"
+                                                        @(brand == Model.SelectedBrand ? "selected" : "")>
+                                                    @brand
+                                                </option>
                                             }
                                         </select>
                                     </div>
@@ -420,18 +640,17 @@
                                             <option value="">All Categories</option>
                                             @foreach (var category in Model.Categories)
                                             {
-                                                <option value="@category" selected="@(category == Model.SelectedCategory)">@category</option>
+                                                <option value="@category"
+                                                        @(category == Model.SelectedCategory ? "selected" : "")>
+                                                    @category
+                                                </option>
                                             }
                                         </select>
                                     </div>
                                     <div class="col-md-4 filter-form-group d-flex align-items-end">
                                         <div class="btn-group filter-button-group">
-                                            <button type="submit" class="btn btn-primary action-button">
-                                                <i class="fas fa-filter mr-1"></i>Apply Filters
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary action-button" onclick="resetFilters()">
-                                                <i class="fas fa-times mr-1"></i>Clear
-                                            </button>
+                                            <button type="submit" class="btn btn-primary">Apply Filters</button>
+                                            <button type="button" class="btn btn-outline-secondary" onclick="resetFilters()">Clear</button>
                                         </div>
                                     </div>
                                 }
@@ -441,47 +660,46 @@
 
                     @if (Model.ProductList.Count > 0)
                     {
-                        <div class="table-responsive-container">
-                            <table class="table data-table table-striped table-hover">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Product Name</th>
-                                        <th>Brand</th>
-                                        <th>Category</th>
-                                        <th>Model Year</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @for (int i = productStartIndex; i < productEndIndex; i++)
-                                    {
-                                        var product = Model.ProductList[i];
-                                        <tr>
-                                            <td>@product.product_name</td>
-                                            <td>@product.BrandName</td>
-                                            <td>@product.CategoryName</td>
-                                            <td>@product.model_year</td>
-                                            <td class="font-weight-bold text-success">@product.list_price.ToString("C")</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                        <div class="row">
+                            @for (int i = productStartIndex; i < productEndIndex; i++)
+                            {
+                                var product = Model.ProductList[i];
+                                var imageUrl = GetProductImageUrl(product.BrandName);
+
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="card product-card h-100">
+                                        <div class="card-img-container">
+                                            <img src="@imageUrl" class="product-image" alt="@product.product_name"
+                                                 onerror="this.src='/Images/Bikes/default.jpg'">
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="product-title">@product.product_name</h5>
+                                            <div class="product-details">
+                                                <p class="mb-1"><strong>Brand:</strong> @product.BrandName</p>
+                                                <p class="mb-1"><strong>Category:</strong> @product.CategoryName</p>
+                                                <p class="mb-1"><strong>Year:</strong> @product.model_year</p>
+                                            </div>
+                                            <div class="product-price">@product.list_price.ToString("C")</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
 
                         if (totalProductPages > 1)
                         {
-                            <nav aria-label="Product pagination" class="pagination-container">
-                                <ul class="pagination justify-content-center">
+                            <nav aria-label="Product pagination" class="pageSelect-container">
+                                <ul class="pageSelect">
                                     @for (int i = 1; i <= totalProductPages; i++)
                                     {
-                                        <li class="page-item pagination-item @(i == productPage ? "active" : "")">
+                                        <li class="pageSelect-item @(i == productPage ? "active" : "")">
                                             @if (i == productPage)
                                             {
-                                                <span class="page-link pagination-link">@i</span>
+                                                <span class="pageSelect-link">@i</span>
                                             }
                                             else
                                             {
-                                                <a class="page-link pagination-link"
+                                                <a class="pageSelect-link"
                                                    href="?staffPage=@staffPage&customerPage=@customerPage&productPage=@i&brandFilter=@Model.SelectedBrand&categoryFilter=@Model.SelectedCategory">
                                                     @i
                                                 </a>
@@ -499,7 +717,6 @@
 </div>
 
 
-
 @section Scripts {
     <script>
         function resetFilters() {
@@ -515,5 +732,6 @@
 
             window.location.href = baseUrl + '?staffPage=' + staffPage + '&customerPage=' + customerPage + '&productPage=' + productPage;
         }
+
     </script>
 }

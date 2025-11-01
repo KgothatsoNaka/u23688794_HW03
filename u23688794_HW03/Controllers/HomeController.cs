@@ -23,36 +23,50 @@ namespace u23688794_HW03.Controllers
 
         public async Task<ActionResult> Index(string brandFilter = null, string categoryFilter = null, int staffPage = 1, int customerPage = 1, int productPage = 1)
         {
-            try
-            {
-                var viewModel = new HomeViewModel
-                {
-                    StaffList = await GetStaffListAsync(),
-                    CustomerList = await GetCustomerListAsync(),
-                    ProductList = await GetFilteredProductsAsync(brandFilter, categoryFilter),
-                    Brands = await GetBrandsAsync(),
-                    Categories = await GetCategoriesAsync(),
-                    SelectedBrand = brandFilter,
-                    SelectedCategory = categoryFilter
-                };
 
-                return View(viewModel);
-            }
-            catch (Exception ex)
+            var viewModel = new HomeViewModel
             {
-                var viewModel = new HomeViewModel
-                {
-                    StaffList = new List<staffs>(),
-                    CustomerList = new List<customers>(),
-                    ProductList = new List<ProductSummary>(),
-                    Brands = new List<string>(),
-                    Categories = new List<string>(),
-                    SelectedBrand = brandFilter,
-                    SelectedCategory = categoryFilter
-                };
-                return View(viewModel);
-            }
+                StaffList = await GetStaffListAsync(),
+                CustomerList = await GetCustomerListAsync(),
+                ProductList = await GetFilteredProductsAsync(brandFilter, categoryFilter),
+                Brands = await GetBrandsAsync(),
+                Categories = await GetCategoriesAsync(),
+                SelectedBrand = brandFilter,
+                SelectedCategory = categoryFilter
+            };
+
+            return View(viewModel);
+
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         private async Task<List<staffs>> GetStaffListAsync()
@@ -72,24 +86,24 @@ namespace u23688794_HW03.Controllers
                 .Take(50)
                 .ToListAsync();
         }
-
-        private async Task<List<ProductSummary>> GetProductListAsync()
-        {
-            return await _context.products
-                .Include(p => p.brands)
-                .Include(p => p.categories)
-                .Select(p => new ProductSummary
+        /*
+                private async Task<List<ProductSummary>> GetProductListAsync()
                 {
-                    product_name = p.product_name,
-                    BrandName = p.brands.brand_name,
-                    CategoryName = p.categories.category_name,
-                    model_year = p.model_year,
-                    list_price = p.list_price
-                })
-                .OrderBy(p => p.product_name)
-                .ToListAsync();
-        }
-
+                    return await _context.products
+                        .Include(p => p.brands)
+                        .Include(p => p.categories)
+                        .Select(p => new ProductSummary
+                        {
+                            product_name = p.product_name,
+                            BrandName = p.brands.brand_name,
+                            CategoryName = p.categories.category_name,
+                            model_year = p.model_year,
+                            list_price = p.list_price
+                        })
+                        .OrderBy(p => p.product_name)
+                        .ToListAsync();
+                }
+        */
         private async Task<List<ProductSummary>> GetFilteredProductsAsync(string brand, string category)
         {
             var query = _context.products

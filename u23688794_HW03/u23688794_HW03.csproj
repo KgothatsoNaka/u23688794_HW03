@@ -131,6 +131,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\customersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MaintainController.cs" />
     <Compile Include="Controllers\productsController.cs" />
     <Compile Include="Controllers\staffsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -161,6 +162,7 @@
       <DependentUpon>BikeStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\HomeViewModel.cs" />
+    <Compile Include="Models\MaintainViewModel.cs" />
     <Compile Include="Models\orders.cs">
       <DependentUpon>BikeStore.tt</DependentUpon>
     </Compile>
@@ -201,6 +203,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\default.jpg" />
     <Content Include="Images\Electra_Cruiser 1.jpeg" />
     <Content Include="Images\Electra_Cruiser.jpeg" />
     <Content Include="Images\Haro_Bikes1.jpeg" />
@@ -283,7 +286,7 @@
     <Content Include="Views\products\Details.cshtml" />
     <Content Include="Views\products\Edit.cshtml" />
     <Content Include="Views\products\Index.cshtml" />
-    <Content Include="Views\BikeStore\Maintain.cshtml" />
+    <Content Include="Views\Maintain\Maintain.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

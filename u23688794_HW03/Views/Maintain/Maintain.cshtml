@@ -1,0 +1,519 @@
+﻿@model u23688794_HW03.Models.MaintainViewModel
+@{
+    ViewBag.Title = "Maintain Records";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // This is for the page navigation
+    var staffPage = Request.QueryString["staffPage"] != null ? int.Parse(Request.QueryString["staffPage"]) : 1;
+    var customerPage = Request.QueryString["customerPage"] != null ? int.Parse(Request.QueryString["customerPage"]) : 1;
+    var productPage = Request.QueryString["productPage"] != null ? int.Parse(Request.QueryString["productPage"]) : 1;
+
+
+    var staffPageSize = 3;
+    var customerPageSize = 3;
+    var productPageSize = 6;
+
+
+    var staffStartIndex = (staffPage - 1) * staffPageSize;
+    var staffEndIndex = Math.Min(staffStartIndex + staffPageSize, Model.StaffList.Count);
+
+    var customerStartIndex = (customerPage - 1) * customerPageSize;
+    var customerEndIndex = Math.Min(customerStartIndex + customerPageSize, Model.CustomerList.Count);
+
+    var productStartIndex = (productPage - 1) * productPageSize;
+    var productEndIndex = Math.Min(productStartIndex + productPageSize, Model.ProductList.Count);
+
+
+    var totalStaffPages = (int)Math.Ceiling((double)Model.StaffList.Count / staffPageSize);
+    var totalCustomerPages = (int)Math.Ceiling((double)Model.CustomerList.Count / customerPageSize);
+    var totalProductPages = (int)Math.Ceiling((double)Model.ProductList.Count / productPageSize);
+}
+
+@section Styles {
+    <style>
+        .maintain-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.375rem 0.375rem 0 0;
+            margin-bottom: 0;
+        }
+
+        .entity-card {
+            border: 1px solid grey;
+            border-radius: 0.375rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .entity-header {
+            background-color: lightblue ;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .entity-body {
+            padding: 1.5rem;
+        }
+
+        .orders-list {
+            background-color: lightgray ;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .order-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid grey;
+        }
+
+            .order-item:last-child {
+                border-bottom: none;
+            }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 0.375rem;
+        }
+
+        .filter-section {
+            background-color: lightblue ;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background-color: green;
+            color: white;
+        }
+
+        .status-inactive {
+            background-color: grey;
+            color: white;
+        }
+
+        .pageSelect-container {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pageSelect {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 0.5rem;
+        }
+
+        .pageSelect-item {
+            border: 1px solid grey;
+            border-radius: 0.375rem;
+        }
+
+            .pageSelect-item.disabled .pageSelect-link {
+                color: #6c757d;
+                pointer-events: none;
+                background-color: #f8f9fa;
+            }
+
+        .pageSelect-link {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            text-decoration: none;
+            color: blue;
+        }
+
+        .pageSelect-item.active .pageSelect-link {
+            background-color: green;
+            color: white;
+            border-color: blue;
+        }
+
+        .pageSelect-link:hover {
+            background-color: green;
+        }
+
+
+    </style>
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header mb-4">
+                <h1 class="page-title">Maintain Records</h1>
+                <p class="page-subtitle">Manage Staff, Customers, and Products</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Staff Section -->
+    <div class="row maintain-section">
+        <div class="col-12">
+            <div class="card">
+
+                <div class="section-header">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-users mr-2"></i>Staff Members
+                    </h3>
+                </div>
+
+                <div class="card-body">
+                    @if (Model.StaffList.Count > 0)
+                    {
+                        <div class="row">
+                            @for (int i = staffStartIndex; i < staffEndIndex; i++)
+                            {
+                                var staff = Model.StaffList[i];
+                                <div class="col-lg-6 col-xl-4 mb-4">
+                                    <div class="entity-card">
+                                        <div class="entity-header">
+                                            <h5 class="mb-1">@staff.first_name @staff.last_name</h5>
+                                            <p class="mb-1 text-muted">Staff ID: @staff.staff_id</p>
+                                            <span class="status-badge @(staff.active == 1 ? "status-active" : "status-inactive")">
+                                                @(staff.active == 1 ? "Active" : "Inactive")
+                                            </span>
+                                        </div>
+
+                                        <div class="entity-body">
+                                            <p class="mb-1"><strong>Email:</strong> @staff.email</p>
+                                            <p class="mb-1"><strong>Phone:</strong> @staff.phone</p>
+                                            <p class="mb-1"><strong>Store:</strong> @staff.store_name</p>
+                                            <p class="mb-1"><strong>Manager:</strong> @staff.manager_name</p>
+
+                                            @if (staff.RecentOrders.Any())
+                                            {
+                                                <div class="orders-list">
+                                                    <h6>Sales:</h6>
+                                                    @foreach (var order in staff.RecentOrders)
+                                                    {
+                                                        <div class="order-item">
+                                                            <small>@order.order_date - @order.product_name</small><br>
+                                                            <small>Qty: @order.quantity - Total: @order.total.ToString("C")</small>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+
+                                            <div class="action-buttons">
+                                                <a href="@Url.Action("Edit", "staffs", new { id = staff.staff_id })"
+                                                   class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="@Url.Action("Delete", "staffs", new { id = staff.staff_id })"
+                                                   class="btn btn-danger btn-sm">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        if (totalStaffPages > 1)
+                        {
+                            <nav aria-label="Staff pagination" class="pageSelect-container">
+                                <ul class="pageSelect">
+                                    @for (int i = 1; i <= totalStaffPages; i++)
+                                    {
+                                        <li class="pageSelect-item @(i == staffPage ? "active" : "")">
+                                            @if (i == staffPage)
+                                            {
+                                                <span class="pageSelect-link">@i</span>
+                                            }
+                                            else
+                                            {
+                                                <a class="pageSelect-link"
+                                                   href="?staffPage=@i&customerPage=@customerPage&productPage=@productPage&brandFilter=@Model.SelectedBrand&categoryFilter=@Model.SelectedCategory">
+                                                    @i
+                                                </a>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            </nav>
+                        }
+                    }
+
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customers Section -->
+    <div class="row maintain-section">
+        <div class="col-12">
+            <div class="card">
+
+                <div class="section-header">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-user-friends mr-2"></i>Customers
+                    </h3>
+                </div>
+
+                <div class="card-body">
+                    @if (Model.CustomerList.Count > 0)
+                    {
+                        <div class="row">
+                            @for (int i = customerStartIndex; i < customerEndIndex; i++)
+                            {
+                                var customer = Model.CustomerList[i];
+                                <div class="col-lg-6 col-xl-4 mb-4">
+                                    <div class="entity-card">
+
+                                        <div class="entity-header">
+                                            <h5 class="mb-1">@customer.first_name @customer.last_name</h5>
+                                            <p class="mb-1 text-muted">Customer ID: @customer.customer_id</p>
+                                        </div>
+
+                                        <div class="entity-body">
+                                            <p class="mb-1"><strong>Email:</strong> @customer.email</p>
+                                            <p class="mb-1"><strong>Phone:</strong> @customer.phone</p>
+                                            <p class="mb-1"><strong>Address:</strong> @customer.street, @customer.city, @customer.state</p>
+
+                                            @if (customer.RecentOrders.Any())
+                                            {
+                                                <div class="orders-list">
+                                                    <h6>Purchases:</h6>
+                                                    @foreach (var order in customer.RecentOrders)
+                                                    {
+                                                        <div class="order-item">
+                                                            <small>@order.order_date - @order.product_name</small><br>
+                                                            <small>Qty: @order.quantity - Total: @order.total.ToString("C")</small>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+
+                                            <div class="action-buttons">
+                                                <a href="@Url.Action("Edit", "customers", new { id = customer.customer_id })"
+                                                   class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="@Url.Action("Delete", "customers", new { id = customer.customer_id })"
+                                                   class="btn btn-danger btn-sm">Delete </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        if (totalCustomerPages > 1)
+                        {
+                            <nav aria-label="Customer pagination" class="pageSelect-container">
+                                <ul class="pageSelect">
+                                    @for (int i = 1; i <= totalCustomerPages; i++)
+                                    {
+                                        <li class="pageSelect-item @(i == customerPage ? "active" : "")">
+                                            @if (i == customerPage)
+                                            {
+                                                <span class="pageSelect-link">@i</span>
+                                            }
+                                            else
+                                            {
+                                                <a class="pageSelect-link"
+                                                   href="?staffPage=@staffPage&customerPage=@i&productPage=@productPage&brandFilter=@Model.SelectedBrand&categoryFilter=@Model.SelectedCategory">
+                                                    @i
+                                                </a>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            </nav>
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Section -->
+    <div class="row maintain-section">
+        <div class="col-12">
+            <div class="card">
+                <div class="section-header">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-bicycle mr-2"></i>Products
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <!-- Filter Section -->
+                    <div class="filter-section">
+                        @using (Html.BeginForm("Maintain", "Maintain", FormMethod.Get, new { @class = "row" }))
+                        {
+                            <div class="col-md-4 mb-2">
+                                <label class="form-label">Filter by Brand:</label>
+                                <select class="form-control" name="brandFilter">
+                                    <option value="">All Brands</option>
+                                    @foreach (var brand in Model.Brands)
+                                    {
+                                        <option value="@brand" selected="@(brand == Model.SelectedBrand)">@brand</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 mb-2">
+                                <label class="form-label">Filter by Category:</label>
+                                <select class="form-control" name="categoryFilter">
+                                    <option value="">All Categories</option>
+                                    @foreach (var category in Model.Categories)
+                                    {
+                                        <option value="@category" selected="@(category == Model.SelectedCategory)">@category</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 mb-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary me-2">Apply Filters</button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="resetFilters()">Clear</button>
+                            </div>
+                        }
+                    </div>
+
+                    @if (Model.ProductList.Count > 0)
+                    {
+                        <div class="row">
+                            @for (int i = productStartIndex; i < productEndIndex; i++)
+                            {
+                                var product = Model.ProductList[i];
+                                <div class="col-lg-6 col-xl-4 mb-4">
+                                    <div class="entity-card">
+
+                                        <div class="entity-header">
+                                            <h5 class="mb-1">@product.product_name</h5>
+                                            <p class="mb-1 text-muted">Product ID: @product.product_id</p>
+                                        </div>
+
+                                        <div class="entity-body">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <p class="mb-1"><strong>Brand:</strong> @product.BrandName</p>
+                                                    <p class="mb-1"><strong>Category:</strong> @product.CategoryName</p>
+                                                    <p class="mb-1"><strong>Year:</strong> @product.model_year</p>
+                                                    <p class="mb-1"><strong>Price:</strong> @product.list_price.ToString("C")</p>
+                                                    <p class="mb-1"><strong>Total Sold:</strong> @product.TotalSold</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="action-buttons">
+                                                <a href="@Url.Action("Edit", "products", new { id = product.product_id })"
+                                                   class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="@Url.Action("Delete", "products", new { id = product.product_id })"
+                                                   class="btn btn-danger btn-sm">Delete</a>                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        if (totalProductPages > 1)
+                        {
+                            <nav aria-label="Product pagination" class="pageSelect-container">
+                                <ul class="pageSelect">
+                                    <!-- Previous Button -->
+                                    <li class="pageSelect-item @(productPage == 1 ? "disabled" : "")">
+                                        @if (productPage == 1)
+                                        {
+                                            <span class="pageSelect-link">&laquo; Previous</span>
+                                        }
+                                        else
+                                        {
+                                            <a class="pageSelect-link"
+                                               href="?staffPage=@staffPage&customerPage=@customerPage&productPage=@(productPage - 1)&brandFilter=@Model.SelectedBrand&categoryFilter=@Model.SelectedCategory">
+                                                &laquo; Previous
+                                            </a>
+                                        }
+                                    </li>
+
+                                    <!-- Page Numbers (limited to 5) -->
+                                    @{
+                                        int startPage = Math.Max(1, productPage - 2);
+                                        int endPage = Math.Min(totalProductPages, startPage + 4);
+                                        startPage = Math.Max(1, endPage - 4); // Adjust start if near the end
+                                    }
+
+                                    @for (int i = startPage; i <= endPage; i++)
+                                    {
+                                        <li class="pageSelect-item @(i == productPage ? "active" : "")">
+                                            @if (i == productPage)
+                                            {
+                                                <span class="pageSelect-link">@i</span>
+                                            }
+                                            else
+                                            {
+                                                <a class="pageSelect-link"
+                                                   href="?staffPage=@staffPage&customerPage=@customerPage&productPage=@i&brandFilter=@Model.SelectedBrand&categoryFilter=@Model.SelectedCategory">
+                                                    @i
+                                                </a>
+                                            }
+                                        </li>
+                                    }
+
+                                    <!-- Next Button -->
+                                    <li class="pageSelect-item @(productPage == totalProductPages ? "disabled" : "")">
+                                        @if (productPage == totalProductPages)
+                                        {
+                                            <span class="pageSelect-link">Next &raquo;</span>
+                                        }
+                                        else
+                                        {
+                                            <a class="pageSelect-link"
+                                               href="?staffPage=@staffPage&customerPage=@customerPage&productPage=@(productPage + 1)&brandFilter=@Model.SelectedBrand&categoryFilter=@Model.SelectedCategory">
+                                                Next &raquo;
+                                            </a>
+                                        }
+                                    </li>
+                                </ul>
+                            </nav>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    <script>
+        function resetFilters() {
+            var baseUrl = '@Url.Action("Maintain", "Maintain")';
+            var params = new URLSearchParams(window.location.search);
+
+            params.delete('brandFilter');
+            params.delete('categoryFilter');
+
+            window.location.href = baseUrl + '?' + params.toString()
+        }
+
+    </script>
+}
