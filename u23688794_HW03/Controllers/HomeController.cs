@@ -86,24 +86,7 @@ namespace u23688794_HW03.Controllers
                 .Take(50)
                 .ToListAsync();
         }
-        /*
-                private async Task<List<ProductSummary>> GetProductListAsync()
-                {
-                    return await _context.products
-                        .Include(p => p.brands)
-                        .Include(p => p.categories)
-                        .Select(p => new ProductSummary
-                        {
-                            product_name = p.product_name,
-                            BrandName = p.brands.brand_name,
-                            CategoryName = p.categories.category_name,
-                            model_year = p.model_year,
-                            list_price = p.list_price
-                        })
-                        .OrderBy(p => p.product_name)
-                        .ToListAsync();
-                }
-        */
+
         private async Task<List<ProductSummary>> GetFilteredProductsAsync(string brand, string category)
         {
             var query = _context.products

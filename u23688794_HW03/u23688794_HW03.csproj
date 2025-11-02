@@ -133,6 +133,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MaintainController.cs" />
     <Compile Include="Controllers\productsController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\staffsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -172,6 +173,7 @@
     <Compile Include="Models\products.cs">
       <DependentUpon>BikeStore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\staffs.cs">
       <DependentUpon>BikeStore.tt</DependentUpon>
     </Compile>
@@ -200,6 +202,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\HomePage.css" />
+    <Content Include="Content\Maintain.css" />
+    <Content Include="Content\Report.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -210,6 +215,7 @@
     <Content Include="Images\Haro_mountain_bike.jpeg" />
     <Content Include="Images\Heler_bike2.jpeg" />
     <Content Include="Images\Heller_bike1.jpeg" />
+    <Content Include="Images\HomePage_Image.jpg" />
     <Content Include="Images\Pure_Cycles1.jpeg" />
     <Content Include="Images\Pure_Cycles2.jpeg" />
     <Content Include="Images\Ritchey_bike2.jpeg" />
@@ -287,6 +293,7 @@
     <Content Include="Views\products\Edit.cshtml" />
     <Content Include="Views\products\Index.cshtml" />
     <Content Include="Views\Maintain\Maintain.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

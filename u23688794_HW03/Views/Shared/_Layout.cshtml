@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - BikeStore</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("Styles", required: false)
@@ -137,7 +137,7 @@
                     <li>@Html.ActionLink("Customers", "Index", "customers", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Products", "Index", "products", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Maintain", "Maintain", "Maintain", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Reports", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Reports", "Index", "Report", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
             </div>
         </div>
@@ -146,7 +146,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - u23688794 Kgothatso Naka</p>
         </footer>
     </div>
 
