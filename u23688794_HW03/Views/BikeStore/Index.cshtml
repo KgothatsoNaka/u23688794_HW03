@@ -239,9 +239,6 @@
                             <div class="col-md-8">
                                 @using (Html.BeginForm("Index", "BikeStore", FormMethod.Get, new { @class = "row", @id = "filterForm" }))
                                 {
-                                    <input type="hidden" name="staffPage" value="@staffPage" />
-                                    <input type="hidden" name="customerPage" value="@customerPage" />
-                                    <input type="hidden" name="productPage" value="@productPage" />
 
                                     <div class="col-md-4 filter-form-group">
                                         <label for="brandFilter" class="filter-label">Filter by Brand:</label>
